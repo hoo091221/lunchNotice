@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>급식 공지</title>
+    <style>
+
+        @font-face {
+            font-family: 'SandolB';
+            src: url('./ttf/AppleSDGothicNeoM.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SandolL';
+            /* 내가 붙일 이름 */
+            src: url('./ttf/AppleSDGothicNeoL.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'SandolL', sans-serif;
+        }
+
+
+        /* ------------------------------
+       화면 비율 고려한 vw 기반 타이포 & 여백
+       - 최대/최소 가독성을 위해 clamp() 사용
+       - 오른쪽의 "○학생 먼저입니다" 표시는 제외
+       ------------------------------ */
+
+        :root {
+            /* 기본 폭 비율: 모바일 한 면 기준 92vw 카드 */
+            --page-w: min(92vw, 520px);
+            /* 너무 커지는 것 방지 */
+
+            /* 타이포 크기 (vw 중심) */
+            --title-fs: clamp(22px, 8vw, 42px);
+            --label-fs: clamp(14px, 3.8vw, 20px);
+            --menu-fs: clamp(14px, 4.2vw, 22px);
+
+            /* 여백 (vw 중심) */
+            --outer-pad-y: clamp(16px, 5vw, 32px);
+            --outer-pad-x: clamp(18px, 6vw, 36px);
+            --section-gap: clamp(16px, 4.8vw, 28px);
+            --line-gap: clamp(6px, 2.2vw, 12px);
+            --label-w: clamp(48px, 14vw, 76px);
+            /* 왼쪽 라벨 고정폭 */
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #2b2b2b;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: clamp(12px, 3.2vw, 24px) 0;
+        }
+
+        .card {
+            width: var(--page-w);
+            padding: var(--outer-pad-y) var(--outer-pad-x);
+            background: #fff;
+        }
+
+        /* 헤더 (가운데 정렬 타이틀만) */
+        .header {
+            text-align: center;
+            margin-bottom: clamp(12px, 4vw, 22px);
+        }
+
+        .title {
+            font-size: var(--title-fs);
+            /* font-weight: 700; */
+            /* letter-spacing: 0.02em; */
+            font-family: 'SandolB', sans-serif;
+        }
+
+        /* 본문: 왼쪽 라벨, 오른쪽 메뉴 */
+        .section {
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(12px, 3.6vw, 20px);
+            margin-bottom: var(--section-gap);
+        }
+
+        .label {
+            flex: 0 0 var(--label-w);
+            font-size: var(--label-fs);
+            font-weight: 600;
+            padding-top: 0.3em;
+        }
+
+        input {
+            font-size: var(--label-fs);
+        }
+
+        .menu {
+            flex: 1;
+            font-size: var(--menu-fs);
+            line-height: 1.6;
+        }
+
+        .menu p {
+            margin: 0 0 var(--line-gap) 0;
+        }
+
+        /* 마지막 섹션은 여백 제거 */
+        .section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* 세로로 긴 화면에서 상하 여백을 조금 늘림 */
+        @media (min-aspect-ratio: 9/16) {
+            :root {
+                --outer-pad-y: clamp(20px, 6vw, 40px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card" role="main">
+        <header class="header">
+            <h1 class="title">8.28 급식</h1>
+            <input style="border:0px">
+        </header>
+
+        <section class="section">
+            <div class="label">중식</div>
+            <div class="menu" aria-label="중식 메뉴">
+                <p>기장밥</p>
+                <p>돈등뼈감자탕</p>
+                <p>저염멸치아몬드볶음</p>
+                <p>비엔나케첩볶음</p>
+                <p>치즈계란찜</p>
+                <p>나박깍두기</p>
+                <p>샤인머스켓</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="label">석식</div>
+            <div class="menu" aria-label="석식 메뉴">
+                <p>찰현미밥</p>
+                <p>비빔막국수</p>
+                <p>꽃떡국</p>
+                <p>매콤돈육대파오븐구이</p>
+                <p>배추김치</p>
+                <p>수박주스</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function lunch() {
+            var dateInfo = new Date();
+            var nowyear = dateInfo.getFullYear();
+            var nowmonth = dateInfo.getMonth() + 1;
+            var nowdate = dateInfo.getDate();
+            var nowtime = dateInfo.getHours();
+            var todaydate =
+                nowyear +
+                '' +
+                ('00' + nowmonth.toString()).slice(-2) +
+                '' +
+                ('00' + nowdate.toString()).slice(-2);
+            if (nowtime > '13') {
+                var tomorrow = new Date(dateInfo.setDate(dateInfo.getDate() + 1));
+                var nowyear = tomorrow.getFullYear();
+                var nowmonth = tomorrow.getMonth() + 1;
+                var nowdate = tomorrow.getDate();
+                var nowtime = tomorrow.getHours();
+                var todaydate =
+                    nowyear +
+                    '' +
+                    ('00' + nowmonth.toString()).slice(-2) +
+                    '' +
+                    ('00' + nowdate.toString()).slice(-2);
+                console.log(todaydate);
+            }
+            const url =
+                'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
+                'S10' + // 학교 코드
+                '&SD_SCHUL_CODE=' +
+                '9111056' + // 시청 코드
+                '&MLSV_YMD=' +
+                todaydate +
+                '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
+
+            var today = new Date();
+            var weekday = new Array(7);
+            weekday[0] = '일요일';
+            weekday[1] = '월요일';
+            weekday[2] = '화요일';
+            weekday[3] = '수요일';
+            weekday[4] = '목요일';
+            weekday[5] = '금요일';
+            weekday[6] = '토요일';
+            var day = weekday[today.getDay()];
+
+            const request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.onload = function () {
+                if (nowtime > '13') {
+                    var menu =
+                        "<span style='font-size: 3vw;'>내일의 급식 메뉴<br></span>" +
+                        request.responseText
+                            .slice(0, -731)
+                            .slice(649)
+                            .replace(/\./g, '')
+                            .replace(/[0-9]/g, '');
+                } else {
+                    var menu =
+                        "<span style='font-size: 3vw;'>오늘의 급식 메뉴<br></span>" +
+                        request.responseText
+                            .slice(0, -731)
+                            .slice(649)
+                            .replace(/\./g, '')
+                            .replace(/[0-9]/g, '');
+                }
+
+                const m = document.getElementById('menu');
+
+                m.innerHTML = menu;
+            };
+            request.send();
+        }
+
+        lunch();
+    </script>
+</body>
+
+</html>
