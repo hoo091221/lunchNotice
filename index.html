@@ -156,30 +156,18 @@
 
     <script>
         function lunch() {
-            var dateInfo = new Date();
-            var nowyear = dateInfo.getFullYear();
-            var nowmonth = dateInfo.getMonth() + 1;
-            var nowdate = dateInfo.getDate();
-            var nowtime = dateInfo.getHours();
+            var today = new Date();
+            var dateInfo = new Date(today.setDate(today.getDate() + 1));
+            var year = dateInfo.getFullYear();
+            var month = dateInfo.getMonth() + 1;
+            var date = dateInfo.getDate();
+            var time = dateInfo.getHours();
             var todaydate =
-                nowyear +
+                year +
                 '' +
-                ('00' + nowmonth.toString()).slice(-2) +
+                ('00' + month.toString()).slice(-2) +
                 '' +
-                ('00' + nowdate.toString()).slice(-2);
-            if (nowtime > '13') {
-                var tomorrow = new Date(dateInfo.setDate(dateInfo.getDate() + 1));
-                var nowyear = tomorrow.getFullYear();
-                var nowmonth = tomorrow.getMonth() + 1;
-                var nowdate = tomorrow.getDate();
-                var nowtime = tomorrow.getHours();
-                var todaydate =
-                    nowyear +
-                    '' +
-                    ('00' + nowmonth.toString()).slice(-2) +
-                    '' +
-                    ('00' + nowdate.toString()).slice(-2);
-            }
+                ('00' + date.toString()).slice(-2);
 
             const url =
                 'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
@@ -224,7 +212,7 @@
                 // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
                 .replace(/[\[\]"]/g, '');
 
-                document.getElementById('title').innerHTML = `${nowmonth}.${nowdate} 급식`;
+                document.getElementById('title').innerHTML = `${month}.${date} 급식`;
                 document.getElementById('menu').innerHTML = menuName;
             };
             request.send();
@@ -233,29 +221,30 @@
         lunch();
 
         function dinner() {
-            var dateInfo = new Date();
-            var nowyear = dateInfo.getFullYear();
-            var nowmonth = dateInfo.getMonth() + 1;
-            var nowdate = dateInfo.getDate();
-            var nowtime = dateInfo.getHours();
+            var today = new Date();
+            var dateInfo = new Date(today.setDate(today.getDate() + 1));
+            var year = dateInfo.getFullYear();
+            var month = dateInfo.getMonth() + 1;
+            var date = dateInfo.getDate();
+            var time = dateInfo.getHours();
             var todaydate =
-                nowyear +
+                year +
                 '' +
-                ('00' + nowmonth.toString()).slice(-2) +
+                ('00' + month.toString()).slice(-2) +
                 '' +
-                ('00' + nowdate.toString()).slice(-2);
-            if (nowtime > '13') {
+                ('00' + date.toString()).slice(-2);
+            if (time > '13') {
                 var tomorrow = new Date(dateInfo.setDate(dateInfo.getDate() + 1));
-                var nowyear = tomorrow.getFullYear();
-                var nowmonth = tomorrow.getMonth() + 1;
-                var nowdate = tomorrow.getDate();
-                var nowtime = tomorrow.getHours();
+                var year = tomorrow.getFullYear();
+                var month = tomorrow.getMonth() + 1;
+                var date = tomorrow.getDate();
+                var time = tomorrow.getHours();
                 var todaydate =
-                    nowyear +
+                    year +
                     '' +
-                    ('00' + nowmonth.toString()).slice(-2) +
+                    ('00' + month.toString()).slice(-2) +
                     '' +
-                    ('00' + nowdate.toString()).slice(-2);
+                    ('00' + date.toString()).slice(-2);
             }
 
             const url =
