@@ -178,6 +178,8 @@
         function lunchNoticeAlert() {
             var today = new Date();
             var dateInfo = new Date(today.setDate(today.getDate() + 1));
+            var time = dateInfo.getHours();
+            if (time < 2) var dateInfo = new Date();
             var year = dateInfo.getFullYear();
             var month = dateInfo.getMonth() + 1;
             var date = dateInfo.getDate();
@@ -200,14 +202,14 @@
                 '&MMEAL_SC_CODE=2' +
                 '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
 
-            var request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            request.onload = function () {
+            var request1 = new XMLHttpRequest();
+            request1.open('GET', url, true);
+            request1.onload = function () {
 
 
-                const data = JSON.parse(request.responseText);
+                let data = JSON.parse(request1.responseText);
                 // mealServiceDietInfo 안에서 row가 있는 객체 찾기
-                const rowObj = data.mealServiceDietInfo.find(item => item.row);
+                let rowObj = data.mealServiceDietInfo.find(item => item.row);
 
                 // row가 있으면 메뉴 이름만 추출
                 let menuNames = [];
@@ -224,7 +226,7 @@
                 document.getElementById('title').innerHTML = `${month}.${date} 급식`;
                 document.getElementById('menu').innerHTML = menuName;
             };
-            request.send();
+            request1.send();
 
             var url =
                 'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
@@ -239,14 +241,14 @@
 
             // console.log(url);
 
-            var request = new XMLHttpRequest();
-            request.open('GET', url, true);
-            request.onload = function () {
+            var request2 = new XMLHttpRequest();
+            request2.open('GET', url, true);
+            request2.onload = function () {
 
 
-                const data = JSON.parse(request.responseText);
+                let data = JSON.parse(request2.responseText);
                 // mealServiceDietInfo 안에서 row가 있는 객체 찾기
-                const rowObj = data.mealServiceDietInfo.find(item => item.row);
+                let rowObj = data.mealServiceDietInfo.find(item => item.row);
 
                 // row가 있으면 메뉴 이름만 추출
                 let menuNames = [];
@@ -262,7 +264,7 @@
 
                 document.getElementById('menuD').innerHTML = menuName;
             };
-            request.send();
+            request2.send();
         }
 
         lunchNoticeAlert();
