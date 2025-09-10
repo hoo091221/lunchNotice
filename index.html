@@ -25,6 +25,13 @@
             font-family: 'SandolL', sans-serif;
         }
 
+        body {
+            -ms-overflow-style: none;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
 
         /* ------------------------------
        화면 비율 고려한 vw 기반 타이포 & 여백
@@ -77,6 +84,13 @@
             background: #fff;
         }
 
+        .container {
+            display: grid;
+            place-items: center;
+            /* 가로·세로 모두 중앙 */
+            height: 100vh;
+        }
+
         /* 헤더 (가운데 정렬 타이틀만) */
         .header {
             text-align: center;
@@ -126,36 +140,42 @@
         }
 
         /* 세로로 긴 화면에서 상하 여백을 조금 늘림 */
-        @media (min-aspect-ratio: 9/16) {
-            :root {
+        @media (width < height) {
+
+            /* :root {
                 --outer-pad-y: clamp(20px, 6vw, 40px);
+            } */
+            .card {
+                align-items: center;
             }
         }
     </style>
 </head>
 
 <body>
-    <main class="card" role="main">
-        <header class="header">
-            <h1 class="title" id="title"></h1>
-            <input style="border:0px">
-        </header>
+    <div class="container">
+        <main class="card" role="main">
+            <header class="header">
+                <h1 class="title" id="title"></h1>
+                <input style="border:0px">
+            </header>
 
-        <section class="section">
-            <div class="label">중식</div>
-            <div id="menu" class="menu" aria-label="중식 메뉴">
-            </div>
-        </section>
+            <section class="section">
+                <div class="label">중식</div>
+                <div id="menu" class="menu" aria-label="중식 메뉴">
+                </div>
+            </section>
 
-        <section class="section">
-            <div class="label">석식</div>
-            <div class="menu" id="menuD" aria-label="석식 메뉴">
-            </div>
-        </section>
-    </main>
+            <section class="section">
+                <div class="label">석식</div>
+                <div class="menu" id="menuD" aria-label="석식 메뉴">
+                </div>
+            </section>
+        </main>
+    </div>
 
     <script>
-        function lunch() {
+        function lunchNoticeAlert() {
             var today = new Date();
             var dateInfo = new Date(today.setDate(today.getDate() + 1));
             var year = dateInfo.getFullYear();
@@ -180,17 +200,6 @@
                 '&MMEAL_SC_CODE=2' +
                 '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
 
-            var today = new Date();
-            var weekday = new Array(7);
-            weekday[0] = '일요일';
-            weekday[1] = '월요일';
-            weekday[2] = '화요일';
-            weekday[3] = '수요일';
-            weekday[4] = '목요일';
-            weekday[5] = '금요일';
-            weekday[6] = '토요일';
-            var day = weekday[today.getDay()];
-
             var request = new XMLHttpRequest();
             request.open('GET', url, true);
             request.onload = function () {
@@ -208,14 +217,15 @@
 
                 // 괄호 안 알레르기 정보 제거 + <br/>을 줄바꿈으로 변환
                 let menuName = JSON.stringify(menuNames)
-                .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
-                // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
-                .replace(/[\[\]"]/g, '');
+                    .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
+                    // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
+                    .replace(/[\[\]"]/g, '');
 
                 document.getElementById('title').innerHTML = `${month}.${date} 급식`;
                 document.getElementById('menu').innerHTML = menuName;
             };
             request.send();
+
             var url =
                 'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
                 'S10' + // 학교 코드
@@ -227,7 +237,7 @@
                 '&MMEAL_SC_CODE=3' +
                 '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
 
-                console.log(url);
+            // console.log(url);
 
             var request = new XMLHttpRequest();
             request.open('GET', url, true);
@@ -246,16 +256,16 @@
 
                 // 괄호 안 알레르기 정보 제거 + <br/>을 줄바꿈으로 변환
                 let menuName = JSON.stringify(menuNames)
-                .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
-                // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
-                .replace(/[\[\]"]/g, '');
+                    .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
+                    // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
+                    .replace(/[\[\]"]/g, '');
 
                 document.getElementById('menuD').innerHTML = menuName;
             };
             request.send();
         }
 
-        lunch();
+        lunchNoticeAlert();
 
     </script>
 </body>
