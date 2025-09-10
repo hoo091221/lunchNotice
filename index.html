@@ -169,7 +169,7 @@
                 '' +
                 ('00' + date.toString()).slice(-2);
 
-            const url =
+            var url =
                 'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
                 'S10' + // 학교 코드
                 '&SD_SCHUL_CODE=' +
@@ -191,7 +191,7 @@
             weekday[6] = '토요일';
             var day = weekday[today.getDay()];
 
-            const request = new XMLHttpRequest();
+            var request = new XMLHttpRequest();
             request.open('GET', url, true);
             request.onload = function () {
 
@@ -216,38 +216,7 @@
                 document.getElementById('menu').innerHTML = menuName;
             };
             request.send();
-        }
-
-        lunch();
-
-        function dinner() {
-            var today = new Date();
-            var dateInfo = new Date(today.setDate(today.getDate() + 1));
-            var year = dateInfo.getFullYear();
-            var month = dateInfo.getMonth() + 1;
-            var date = dateInfo.getDate();
-            var time = dateInfo.getHours();
-            var todaydate =
-                year +
-                '' +
-                ('00' + month.toString()).slice(-2) +
-                '' +
-                ('00' + date.toString()).slice(-2);
-            if (time > '13') {
-                var tomorrow = new Date(dateInfo.setDate(dateInfo.getDate() + 1));
-                var year = tomorrow.getFullYear();
-                var month = tomorrow.getMonth() + 1;
-                var date = tomorrow.getDate();
-                var time = tomorrow.getHours();
-                var todaydate =
-                    year +
-                    '' +
-                    ('00' + month.toString()).slice(-2) +
-                    '' +
-                    ('00' + date.toString()).slice(-2);
-            }
-
-            const url =
+            var url =
                 'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
                 'S10' + // 학교 코드
                 '&SD_SCHUL_CODE=' +
@@ -259,18 +228,8 @@
                 '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
 
                 console.log(url);
-            var today = new Date();
-            var weekday = new Array(7);
-            weekday[0] = '일요일';
-            weekday[1] = '월요일';
-            weekday[2] = '화요일';
-            weekday[3] = '수요일';
-            weekday[4] = '목요일';
-            weekday[5] = '금요일';
-            weekday[6] = '토요일';
-            var day = weekday[today.getDay()];
 
-            const request = new XMLHttpRequest();
+            var request = new XMLHttpRequest();
             request.open('GET', url, true);
             request.onload = function () {
 
@@ -296,7 +255,8 @@
             request.send();
         }
 
-        dinner();
+        lunch();
+
     </script>
 </body>
 
