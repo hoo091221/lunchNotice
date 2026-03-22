@@ -119,7 +119,7 @@
             padding-top: 0.03em;
         }
 
-        input {
+        #input {
             font-family: 'SandolL', sans-serif;
             font-size: var(--label-fs);
             user-select: none;
@@ -160,9 +160,7 @@
         <main class="card" role="main">
             <header class="header">
                 <h1 class="title" id="title"></h1>
-                <p style="font-family: 'SandolL', sans-serif; font-size: var(--label-fs);">
-                    <input style="border:0px;width: calc(var(--label-fs) * 3);" value="남학생" id="input"> 먼저입니다!
-                </p>
+                <p style="font-family: 'SandolL', sans-serif; font-size: var(--label-fs);" id="input">남학생 먼저입니다!</p>
             </header>
 
             <section class="section">
@@ -184,10 +182,10 @@
         const input = document.getElementById("input");
 
         input.addEventListener("click", () => {
-            if (input.value == '남학생') {
-                input.value = "여학생"
-            } else if (input.value == '여학생') {
-                input.value = "남학생"
+            if (input.textContent == '남학생 먼저입니다!') {
+                input.textContent = "여학생 먼저입니다!"
+            } else if (input.textContent == '여학생 먼저입니다!') {
+                input.textContent = "남학생 먼저입니다!"
             };
         });
 
