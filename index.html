@@ -207,8 +207,8 @@
             request1.onload = function () {
 
 
-                console.log(data)
                 let data = JSON.parse(request1.responseText);
+                console.log(data)
                 // mealServiceDietInfo 안에서 row가 있는 객체 찾기
                 let rowObj = data.mealServiceDietInfo.find(item => item.row);
 
