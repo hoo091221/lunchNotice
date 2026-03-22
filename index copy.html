@@ -156,19 +156,21 @@
     <div class="container">
         <main class="card" role="main">
             <header class="header">
-                <h1 class="title" id="title"></h1>
+                <h1 class="title" id="title">1.5 급식</h1>
                 <input style="border:0px">
             </header>
 
             <section class="section">
                 <div class="label">중식</div>
-                <div id="menu" class="menu" aria-label="중식 메뉴">
+                <div id="menu" class="menu" aria-label="중식 메뉴">X
                 </div>
             </section>
+            
+            <div style="height:10vh;"></div>
 
             <section class="section">
                 <div class="label">석식</div>
-                <div class="menu" id="menuD" aria-label="석식 메뉴">
+                <div class="menu" id="menuD" aria-label="석식 메뉴">X
                 </div>
             </section>
         </main>
@@ -191,82 +193,8 @@
                 '' +
                 ('00' + date.toString()).slice(-2);
 
-            var url =
-                'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
-                'S10' + // 학교 코드
-                '&SD_SCHUL_CODE=' +
-                '9010079' + // 행정 표준 코드
-                '&MLSV_YMD=' +
-                todaydate +
-                '&TYPE=JSON' +
-                '&MMEAL_SC_CODE=2' +
-                '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
-
-            var request1 = new XMLHttpRequest();
-            request1.open('GET', url, true);
-            request1.onload = function () {
-
-
-                let data = JSON.parse(request1.responseText);
-                // mealServiceDietInfo 안에서 row가 있는 객체 찾기
-                let rowObj = data.mealServiceDietInfo.find(item => item.row);
-                console.log(data)
-
-                // row가 있으면 메뉴 이름만 추출
-                let menuNames = [];
-                if (rowObj && rowObj.row) {
-                    menuNames = rowObj.row.map(item => item.DDISH_NM);
-                }
-
-                // 괄호 안 알레르기 정보 제거 + <br/>을 줄바꿈으로 변환
-                let menuName = JSON.stringify(menuNames)
-                    .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
-                    // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
-                    .replace(/[\[\]"]/g, '');
-
-                document.getElementById('title').innerHTML = `${month}.${date} 급식`;
-                document.getElementById('menu').innerHTML = menuName;
-            };
-            request1.send();
-
-            var url =
-                'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
-                'S10' + // 학교 코드
-                '&SD_SCHUL_CODE=' +
-                '9010079' + // 행정 표준 코드
-                '&MLSV_YMD=' +
-                todaydate +
-                '&TYPE=JSON' +
-                '&MMEAL_SC_CODE=3' +
-                '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
-
-            // console.log(url);
-
-            var request2 = new XMLHttpRequest();
-            request2.open('GET', url, true);
-            request2.onload = function () {
-
-
-                let data = JSON.parse(request2.responseText);
-                // mealServiceDietInfo 안에서 row가 있는 객체 찾기
-                let rowObj = data.mealServiceDietInfo.find(item => item.row);
-
-                // row가 있으면 메뉴 이름만 추출
-                let menuNames = [];
-                if (rowObj && rowObj.row) {
-                    menuNames = rowObj.row.map(item => item.DDISH_NM);
-                }
-
-                // 괄호 안 알레르기 정보 제거 + <br/>을 줄바꿈으로 변환
-                let menuName = JSON.stringify(menuNames)
-                    .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
-                    // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
-                    .replace(/[\[\]"]/g, '');
-
-                document.getElementById('menuD').innerHTML = menuName;
-            };
-            request2.send();
-        }
+            // document.getElementById('title').innerHTML = 
+        };
 
         lunchNoticeAlert();
 
