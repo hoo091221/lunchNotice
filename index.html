@@ -207,10 +207,10 @@
             request1.onload = function () {
 
 
+                console.log(data)
                 let data = JSON.parse(request1.responseText);
                 // mealServiceDietInfo 안에서 row가 있는 객체 찾기
                 let rowObj = data.mealServiceDietInfo.find(item => item.row);
-                console.log(data)
 
                 // row가 있으면 메뉴 이름만 추출
                 let menuNames = [];
