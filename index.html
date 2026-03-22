@@ -122,6 +122,9 @@
         input {
             font-family: 'SandolL', sans-serif;
             font-size: var(--label-fs);
+            user-select: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .menu {
@@ -157,7 +160,9 @@
         <main class="card" role="main">
             <header class="header">
                 <h1 class="title" id="title"></h1>
-                <input style="border:0px">
+                <p style="font-family: 'SandolL', sans-serif; font-size: var(--label-fs);">
+                    <input style="border:0px;width: calc(var(--label-fs) * 3);" value="남학생" id="input"> 먼저입니다!
+                </p>
             </header>
 
             <section class="section">
@@ -175,11 +180,22 @@
     </div>
 
     <script>
+
+        const input = document.getElementById("input");
+
+        input.addEventListener("click", () => {
+            if (input.value == '남학생') {
+                input.value = "여학생"
+            } else if (input.value == '여학생') {
+                input.value = "남학생"
+            };
+        });
+
         function lunchNoticeAlert() {
             var today = new Date();
             var dateInfo = new Date(today.setDate(today.getDate() + 1));
             var time = dateInfo.getHours();
-            if (time < 2) var dateInfo = new Date();
+            // if (time < 2) var dateInfo = new Date();
             var year = dateInfo.getFullYear();
             var month = dateInfo.getMonth() + 1;
             var date = dateInfo.getDate();
