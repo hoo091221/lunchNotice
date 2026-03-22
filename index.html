@@ -177,7 +177,7 @@
     <script>
         function lunchNoticeAlert() {
             var today = new Date();
-            var dateInfo = new Date(today.setDate(today.getDate() + 1));
+            var dateInfo = new Date(today.setDate(today.getDate() + 0));
             var time = dateInfo.getHours();
             if (time < 2) var dateInfo = new Date();
             var year = dateInfo.getFullYear();
