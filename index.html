@@ -159,7 +159,7 @@
     <div class="container">
         <main class="card" role="main">
             <header class="header">
-                <h1 class="title" id="title"></h1>
+                <h1 class="title" id="title" style="user-select: none;">00.00</h1>
                 <p style="font-family: 'SandolL', sans-serif; font-size: var(--label-fs);" id="input">남학생 먼저입니다!</p>
             </header>
 
@@ -177,104 +177,127 @@
         </main>
     </div>
 
-    <script>
+    <script>const title = document.getElementById("title");
+        const dateInput = document.getElementById("dateInput");
+
+        // 오늘 / 내일 상태 (기본: 내일)
+        let isTomorrow = true;
+
+        // 👉 주말이면 다음 평일로 이동하는 함수
+        function getSchoolDate(offset) {
+            let date = new Date();
+            date.setDate(date.getDate() + offset);
+
+            // 토(6), 일(0) → 다음 평일로 넘김
+            while (date.getDay() === 0 || date.getDay() === 6) {
+                date.setDate(date.getDate() + 1);
+            }
+
+            return date;
+        }
+
+        // 👉 클릭 시 토글
+        title.addEventListener("click", () => {
+            isTomorrow = !isTomorrow;
+            const offset = isTomorrow ? 1 : 0;
+            lunchNoticeAlert(offset);
+        });
 
         const input = document.getElementById("input");
 
+        // 👉 남/여 토글
         input.addEventListener("click", () => {
             if (input.textContent == '남학생 먼저입니다!') {
                 input.textContent = "여학생 먼저입니다!"
-            } else if (input.textContent == '여학생 먼저입니다!') {
+            } else {
                 input.textContent = "남학생 먼저입니다!"
-            };
+            }
         });
 
-        function lunchNoticeAlert() {
-            var today = new Date();
-            var dateInfo = new Date(today.setDate(today.getDate() + 1));
-            var time = dateInfo.getHours();
-            // if (time < 2) var dateInfo = new Date();
+        function lunchNoticeAlert(offset = 1) {
+            let dateInfo = getSchoolDate(offset);
+
             var year = dateInfo.getFullYear();
             var month = dateInfo.getMonth() + 1;
             var date = dateInfo.getDate();
-            var time = dateInfo.getHours();
+
             var todaydate =
                 year +
-                '' +
-                ('00' + month.toString()).slice(-2) +
-                '' +
-                ('00' + date.toString()).slice(-2);
+                ('00' + month).slice(-2) +
+                ('00' + date).slice(-2);
 
-            var url =
+            // 👉 제목 업데이트 (오늘/내일 표시)
+            document.getElementById('title').innerHTML =
+                `${month}.${date} 급식`;
+
+            // ---------- 중식 ----------
+            var url1 =
                 'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
-                'S10' + // 학교 코드
+                'S10' +
                 '&SD_SCHUL_CODE=' +
-                '9010079' + // 행정 표준 코드
+                '9010079' +
                 '&MLSV_YMD=' +
                 todaydate +
                 '&TYPE=JSON' +
                 '&MMEAL_SC_CODE=2' +
-                '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
+                '&key=0329ec2eb15f4888b665ab2b92887d4a';
 
             var request1 = new XMLHttpRequest();
-            request1.open('GET', url, true);
+            request1.open('GET', url1, true);
             request1.onload = function () {
-
-
                 let data = JSON.parse(request1.responseText);
-                console.log(data)
-                // mealServiceDietInfo 안에서 row가 있는 객체 찾기
+
+                if (!data.mealServiceDietInfo) {
+                    document.getElementById('menu').innerHTML = "급식 정보 없음";
+                    return;
+                }
+
                 let rowObj = data.mealServiceDietInfo.find(item => item.row);
 
-                // row가 있으면 메뉴 이름만 추출
                 let menuNames = [];
                 if (rowObj && rowObj.row) {
                     menuNames = rowObj.row.map(item => item.DDISH_NM);
                 }
 
-                // 괄호 안 알레르기 정보 제거 + <br/>을 줄바꿈으로 변환
                 let menuName = JSON.stringify(menuNames)
-                    .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
-                    // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
+                    .replace(/\([^)]*\)/g, "")
                     .replace(/[\[\]"]/g, '');
 
-                document.getElementById('title').innerHTML = `${month}.${date} 급식`;
                 document.getElementById('menu').innerHTML = menuName;
             };
             request1.send();
 
-            var url =
+            // ---------- 석식 ----------
+            var url2 =
                 'https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=' +
-                'S10' + // 학교 코드
+                'S10' +
                 '&SD_SCHUL_CODE=' +
-                '9010079' + // 행정 표준 코드
+                '9010079' +
                 '&MLSV_YMD=' +
                 todaydate +
                 '&TYPE=JSON' +
                 '&MMEAL_SC_CODE=3' +
-                '&key=0329ec2eb15f4888b665ab2b92887d4a'; // 키값
-
-            // console.log(url);
+                '&key=0329ec2eb15f4888b665ab2b92887d4a';
 
             var request2 = new XMLHttpRequest();
-            request2.open('GET', url, true);
+            request2.open('GET', url2, true);
             request2.onload = function () {
-
-
                 let data = JSON.parse(request2.responseText);
-                // mealServiceDietInfo 안에서 row가 있는 객체 찾기
+
+                if (!data.mealServiceDietInfo) {
+                    document.getElementById('menuD').innerHTML = "급식 정보 없음";
+                    return;
+                }
+
                 let rowObj = data.mealServiceDietInfo.find(item => item.row);
 
-                // row가 있으면 메뉴 이름만 추출
                 let menuNames = [];
                 if (rowObj && rowObj.row) {
                     menuNames = rowObj.row.map(item => item.DDISH_NM);
                 }
 
-                // 괄호 안 알레르기 정보 제거 + <br/>을 줄바꿈으로 변환
                 let menuName = JSON.stringify(menuNames)
-                    .replace(/\([^)]*\)/g, "")   // 괄호 안 제거
-                    // .replace(/<br\/?>/g, "\n") // <br> 태그 삭제
+                    .replace(/\([^)]*\)/g, "")
                     .replace(/[\[\]"]/g, '');
 
                 document.getElementById('menuD').innerHTML = menuName;
@@ -282,8 +305,8 @@
             request2.send();
         }
 
-        lunchNoticeAlert();
-
+        // 👉 처음 실행 (내일 기준)
+        lunchNoticeAlert(1);
     </script>
 </body>
 
